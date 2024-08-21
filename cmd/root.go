@@ -11,9 +11,9 @@ import (
 )
 
 var RootCmd = &cobra.Command{
-	Use:   "OmsProjections",
-	Short: "Oms Projection Application",
-	Long:  "Command Line Interface for Oms Projection Applications",
+	Use:   "Order Kafka Consumer Projects",
+	Short: "Order Kafka Consumer Application",
+	Long:  "Command Line Interface for Order Kafka Consumer Applications",
 }
 
 func Execute() {
@@ -36,13 +36,14 @@ func InitEnvVariables() {
 	if environmentName != "" {
 		environmentFilePath := ""
 
-		environmentFilePath = fmt.Sprintf("tools/%s/%s.env", appName, environmentName)
+		environmentFilePath = fmt.Sprintf("tools/app_configs/%s/%s/config.env", appName, environmentName)
 
 		fmt.Printf("{\"Message\": \"EnvironmentFilePath: %s\"}\n", environmentFilePath)
 
 		absPath, _ := filepath.Abs(environmentFilePath)
 
-		if _, err := os.Stat(absPath); err == nil {
+		_, err := os.Stat(absPath)
+		if err == nil {
 
 			err = godotenv.Load(environmentFilePath)
 			if err != nil {
