@@ -1,5 +1,5 @@
 package events
 
 type Created struct {
-	OrderNumber string `json:"string"`
+	OrderNumber string `json:"OrderNumber,omitempty"`
 }

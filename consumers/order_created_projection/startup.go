@@ -18,22 +18,28 @@ func Init(cmd *cobra.Command, args []string) error {
 		Brokers:             []string{"localhost:9092", "localhost:9093", "localhost:9094"},
 		AppName:             "order.created.consumer",
 		Topics:              []string{"hepsiburada.oms.order.created.v1.main"},
-		AutoOffsetResetType: karacakafka.AutoOffsetResetTypeEarliest,
+		TopicDomainName:     "hepsiburada",
+		TopicSubDomainName:  "oms",
+		AutoOffsetResetType: karacakafka.AutoOffsetResetTypeLatest,
 	}
 
 	var producerConfig = karacakafka.ProducerConfig{
-		Brokers:           []string{"localhost:9092", "localhost:9093", "localhost:9094"},
-		AcknowledgeType:   karacakafka.AcknowledgeTypeAll,
-		CompressionType:   karacakafka.CompressionTypeGzip,
-		DeliveryTimeoutMs: karacakafka.DefaultDeliveryTimeoutMs * time.Second,
+		Brokers:            []string{"localhost:9092", "localhost:9093", "localhost:9094"},
+		AcknowledgeType:    karacakafka.AcknowledgeTypeAll,
+		CompressionType:    karacakafka.CompressionTypeGzip,
+		TopicDomainName:    "hepsiburada",
+		TopicSubDomainName: "oms",
+		DeliveryTimeoutMs:  karacakafka.DefaultDeliveryTimeoutMs * time.Second,
 	}
 
 	var readerConfig = karacakafka.ReaderConfig{
 		Brokers:               []string{"localhost:9092", "localhost:9093", "localhost:9094"},
-		GroupID:               "groupID",
-		AutoOffsetResetType:   karacakafka.AutoOffsetResetTypeEarliest,
+		GroupID:               "order.created.consumer",
+		AutoOffsetResetType:   karacakafka.AutoOffsetResetTypeLatest,
 		AllowAutoCreateTopics: false,
 		EnableAutoCommit:      false,
+		TopicDomainName:       "hepsiburada",
+		TopicSubDomainName:    "oms",
 		FetchMaxBytes:         6428800,
 		SessionTimeout:        10 * time.Second,
 		Debug:                 "consumer",
