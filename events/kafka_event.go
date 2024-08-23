@@ -2,7 +2,7 @@ package events
 
 import (
 	"errors"
-	"github.com/mustafatheconqueror/karaca-kafka/kafka_message"
+	karacakafka "github.com/mustafatheconqueror/karaca-kafka"
 	uuid "github.com/satori/go.uuid"
 	"strings"
 	"time"
@@ -38,8 +38,7 @@ func (self *KafkaEvent) GetEventType() (string, error) {
 
 	return strings.Split(self.Headers.Type, ",")[0], nil
 }
-
-func MapHeaders(headers kafka_message.KafkaHeaders) KafkaHeaders {
+func MapHeaders(headers karacakafka.KaracaMessageHeader) KafkaHeaders {
 
 	var (
 		kafkaHeaders KafkaHeaders

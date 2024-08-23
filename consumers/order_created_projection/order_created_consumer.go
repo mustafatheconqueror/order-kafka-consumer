@@ -2,28 +2,27 @@ package order_created_projection
 
 import (
 	"encoding/json"
-	"github.com/mustafatheconqueror/karaca-kafka/consumer"
-	"github.com/mustafatheconqueror/karaca-kafka/kafka_message"
+	karacaKafka "github.com/mustafatheconqueror/karaca-kafka"
 	"order-kafka-consumer/events"
 	"order-kafka-consumer/infrastructure/errors"
 )
 
 type OrderCreatedConsumer struct {
-	messageBus *consumer.Consumer
+	messageBus karacaKafka.KaracaConsumer
 }
 
 type Order struct {
 	OrderNumber string
 }
 
-func NewOrderCreatedConsumer(messageBus *consumer.Consumer) *OrderCreatedConsumer {
+func NewOrderCreatedConsumer(messageBus karacaKafka.KaracaConsumer) *OrderCreatedConsumer {
 	return &OrderCreatedConsumer{
 		messageBus: messageBus,
 	}
 }
 
-func (ol *OrderCreatedConsumer) onConsume() func(message kafka_message.KafkaMessage) error {
-	return func(message kafka_message.KafkaMessage) error {
+func (ol *OrderCreatedConsumer) onConsume() func(message karacaKafka.KaracaMessage) error {
+	return func(message karacaKafka.KaracaMessage) error {
 
 		var (
 			kafkaEvent      events.KafkaEvent
