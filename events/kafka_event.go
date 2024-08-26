@@ -11,7 +11,7 @@ import (
 type KafkaEvent struct {
 	CorrelationId string `json:"correlationId"`
 	Message       map[string]interface{}
-	Headers       KafkaHeaders `json:"headers"`
+	Headers       *KafkaHeaders `json:"headers"`
 }
 
 type KafkaHeaders struct {
@@ -38,7 +38,7 @@ func (self *KafkaEvent) GetEventType() (string, error) {
 
 	return strings.Split(self.Headers.Type, ",")[0], nil
 }
-func MapHeaders(headers karacakafka.KaracaMessageHeader) KafkaHeaders {
+func MapHeaders(headers *karacakafka.KaracaMessageHeader) *KafkaHeaders {
 
 	var (
 		kafkaHeaders KafkaHeaders
@@ -51,5 +51,5 @@ func MapHeaders(headers karacakafka.KaracaMessageHeader) KafkaHeaders {
 	kafkaHeaders.IdentityName = headers.IdentityName
 	kafkaHeaders.Type = headers.MessageType
 
-	return kafkaHeaders
+	return &kafkaHeaders
 }

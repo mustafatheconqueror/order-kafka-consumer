@@ -61,6 +61,12 @@ func (ol *OrderCreatedConsumer) onConsume() func(message karacaKafka.KaracaMessa
 		if orderCreatedEvent.OrderNumber == "57" {
 			return errors.NewWithCause(SinopError, err)
 		}
+		if orderCreatedEvent.OrderNumber == "58" {
+			message.Headers.IsRetryable = "false"
+			message.CorrelationId = "5757"
+			message.Partition = 2
+			return errors.NewWithCause(SinopError, err)
+		}
 
 		return nil
 	}
