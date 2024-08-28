@@ -3,8 +3,11 @@ package order_created_projection
 import (
 	"encoding/json"
 	karacaKafka "github.com/mustafatheconqueror/karaca-kafka"
+	"log"
+	"math/rand"
 	"order-kafka-consumer/events"
 	"order-kafka-consumer/infrastructure/errors"
+	"time"
 )
 
 type OrderCreatedConsumer struct {
@@ -58,15 +61,23 @@ func (ol *OrderCreatedConsumer) onConsume() func(message karacaKafka.KaracaMessa
 			return errors.NewWithCause(ConvertEventError, err, orderCreatedEvent)
 		}
 
-		if orderCreatedEvent.OrderNumber == "57" {
+		if orderCreatedEvent.OrderNumber == "56" {
 			return errors.NewWithCause(SinopError, err)
+		}
+
+		if orderCreatedEvent.OrderNumber == "57" {
+			rand.Seed(time.Now().UnixNano())
+			randomNumber := rand.Intn(4) + 1
+			if randomNumber <= 2 {
+				return errors.NewWithCause(SinopError, err)
+			}
 		}
 		if orderCreatedEvent.OrderNumber == "58" {
 			message.Headers.IsRetryable = "false"
-			message.CorrelationId = "5757"
-			message.Partition = 2
 			return errors.NewWithCause(SinopError, err)
 		}
+
+		log.Println("Message Successs", orderCreatedEvent.MessageId)
 
 		return nil
 	}
